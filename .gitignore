@@ -1,0 +1,5 @@
+/aws-3tier-terraform/terraform.tfvars
+/aws-3tier-terraform/terraform.tfstate
+/aws-3tier-terraform/terraform.tfstate.backup
+/aws-3tier-terraform/.terraform/*
+/aws-3tier-terraform/.terraform.lock.hcl
