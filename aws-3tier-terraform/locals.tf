@@ -1,3 +1,6 @@
+# Αρχείο με local values για κοινά tags και λίστες subnet IDs που επαναχρησιμοποιούνται.
+
+# Το locals block ορίζει βοηθητικές τιμές που χρησιμοποιούνται σε πολλά αρχεία.
 locals {
   common_tags = {
     Project     = var.project_name
