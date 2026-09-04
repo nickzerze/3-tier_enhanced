@@ -1,5 +1,35 @@
-/aws-3tier-terraform/terraform.tfvars
-/aws-3tier-terraform/terraform.tfstate
-/aws-3tier-terraform/terraform.tfstate.backup
-/aws-3tier-terraform/.terraform/*
-/aws-3tier-terraform/.terraform.lock.hcl
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Node.js
+node_modules/
+build/
+coverage/
+npm-debug.log*
+.env
+.env.*
+!.env.example
+
+# Generated deployment artifacts
+*.zip
+
+# Terraform working data and local configuration
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+*.tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Keep dependency selections reproducible in local runs and CI.
+!.terraform.lock.hcl

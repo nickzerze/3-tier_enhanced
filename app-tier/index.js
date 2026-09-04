@@ -2,98 +2,111 @@ const transactionService = require('./TransactionService');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const os = require('os');
-const fetch = require('node-fetch');
 
 const app = express();
-const port = 4000;
+const port = Number(process.env.PORT) || 4000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors());
 
-// ROUTES FOR OUR API
-// =======================================================
+// Browser requests are same-origin in AWS. Set CORS_ORIGIN only for a trusted
+// local or external frontend that must call the API directly.
+app.use(cors({ origin: process.env.CORS_ORIGIN || false }));
 
-//Health Checking
-app.get('/health',(req,res)=>{
-    res.json("This is the health check");
+app.get('/health', (req, res) => {
+  res.json({ status: 'healthy' });
 });
 
-// ADD TRANSACTION
-app.post('/transaction', (req,res)=>{
-    var response = "";
-    try{
-        console.log(req.body);
-        console.log(req.body.amount);
-        console.log(req.body.desc);
-        var success = transactionService.addTransaction(req.body.amount,req.body.desc);
-        if (success = 200) res.json({ message: 'added transaction successfully'});
-    }catch (err){
-        res.json({ message: 'something went wrong', error : err.message});
+app.post('/transaction', async (req, res) => {
+  const amount = Number(req.body.amount);
+  const description = String(req.body.desc || '').trim();
+
+  if (!Number.isFinite(amount) || !description || description.length > 255) {
+    res.status(400).json({ message: 'A numeric amount and description of 1-255 characters are required.' });
+    return;
+  }
+
+  try {
+    await transactionService.addTransaction(amount, description);
+    res.status(201).json({ message: 'Transaction added successfully.' });
+  } catch (error) {
+    console.error('Failed to add transaction:', error.message);
+    res.status(500).json({ message: 'Unable to add transaction.' });
+  }
+});
+
+app.get('/transaction', async (req, res) => {
+  try {
+    const transactions = await transactionService.getAllTransactions();
+    res.json({ result: transactions });
+  } catch (error) {
+    console.error('Failed to list transactions:', error.message);
+    res.status(500).json({ message: 'Unable to list transactions.' });
+  }
+});
+
+app.delete('/transaction', async (req, res) => {
+  try {
+    await transactionService.deleteAllTransactions();
+    res.json({ message: 'All transactions deleted.' });
+  } catch (error) {
+    console.error('Failed to delete transactions:', error.message);
+    res.status(500).json({ message: 'Unable to delete transactions.' });
+  }
+});
+
+app.get('/transaction/:id', async (req, res) => {
+  const id = Number.parseInt(req.params.id, 10);
+  if (!Number.isInteger(id) || id < 1) {
+    res.status(400).json({ message: 'A positive transaction ID is required.' });
+    return;
+  }
+
+  try {
+    const transaction = await transactionService.findTransactionById(id);
+    if (!transaction) {
+      res.status(404).json({ message: 'Transaction not found.' });
+      return;
     }
+    res.json(transaction);
+  } catch (error) {
+    console.error('Failed to retrieve transaction:', error.message);
+    res.status(500).json({ message: 'Unable to retrieve transaction.' });
+  }
 });
 
-// GET ALL TRANSACTIONS
-app.get('/transaction',(req,res)=>{
-    try{
-        var transactionList = [];
-       transactionService.getAllTransactions(function (results) {
-            console.log("we are in the call back:");
-            for (const row of results) {
-                transactionList.push({ "id": row.id, "amount": row.amount, "description": row.description });
-            }
-            console.log(transactionList);
-            res.statusCode = 200;
-            res.json({"result":transactionList});
-        });
-    }catch (err){
-        res.json({message:"could not get all transactions",error: err.message});
+app.delete('/transaction/:id', async (req, res) => {
+  const id = Number.parseInt(req.params.id, 10);
+  if (!Number.isInteger(id) || id < 1) {
+    res.status(400).json({ message: 'A positive transaction ID is required.' });
+    return;
+  }
+
+  try {
+    const result = await transactionService.deleteTransactionById(id);
+    if (result.affectedRows === 0) {
+      res.status(404).json({ message: 'Transaction not found.' });
+      return;
     }
+    res.json({ message: `Transaction ${id} deleted.` });
+  } catch (error) {
+    console.error('Failed to delete transaction:', error.message);
+    res.status(500).json({ message: 'Unable to delete transaction.' });
+  }
 });
 
-//DELETE ALL TRANSACTIONS
-app.delete('/transaction',(req,res)=>{
-    try{
-        transactionService.deleteAllTransactions(function(result){
-            res.statusCode = 200;
-            res.json({message:"delete function execution finished."})
-        })
-    }catch (err){
-        res.json({message: "Deleting all transactions may have failed.", error:err.message});
-    }
-});
+async function start() {
+  await transactionService.initializeDatabase();
+  return app.listen(port, () => {
+    console.log(`AWS 3-tier app listening on port ${port}`);
+  });
+}
 
-//DELETE ONE TRANSACTION
-app.delete('/transaction/id', (req,res)=>{
-    try{
-        //probably need to do some kind of parameter checking
-        transactionService.deleteTransactionById(req.body.id, function(result){
-            res.statusCode = 200;
-            res.json({message: `transaction with id ${req.body.id} seemingly deleted`});
-        })
-    } catch (err){
-        res.json({message:"error deleting transaction", error: err.message});
-    }
-});
+if (require.main === module) {
+  start().catch((error) => {
+    console.error('Application startup failed:', error.message);
+    process.exit(1);
+  });
+}
 
-//GET SINGLE TRANSACTION
-app.get('/transaction/id',(req,res)=>{
-    //also probably do some kind of parameter checking here
-    try{
-        transactionService.findTransactionById(req.body.id,function(result){
-            res.statusCode = 200;
-            var id = result[0].id;
-            var amt = result[0].amount;
-            var desc= result[0].desc;
-            res.json({"id":id,"amount":amt,"desc":desc});
-        });
-
-    }catch(err){
-        res.json({message:"error retrieving transaction", error: err.message});
-    }
-});
-
-  app.listen(port, () => {
-    console.log(`AB3 backend app listening at http://localhost:${port}`)
-  })
+module.exports = app;

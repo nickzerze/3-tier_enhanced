@@ -6,11 +6,11 @@ resource "aws_wafv2_web_acl" "public_alb" {
   count = var.enable_waf ? 1 : 0
 
   # Ορίζει το όνομα του πόρου μέσα στην AWS.
-  name        = "${var.project_name}-${var.environment}-public-alb-waf"
+  name = "${var.project_name}-${var.environment}-public-alb-waf"
   # Περιγράφει τον σκοπό του πόρου.
   description = "WAF Web ACL for the public Application Load Balancer"
   # Ορίζει αν το WAF είναι REGIONAL ή CLOUDFRONT.
-  scope       = "REGIONAL"
+  scope = "REGIONAL"
 
   # Προεπιλεγμένη ενέργεια όταν δεν ταιριάζει κάποιος ειδικός κανόνας.
   default_action {
@@ -21,7 +21,7 @@ resource "aws_wafv2_web_acl" "public_alb" {
   # Ορίζει κανόνα ή policy block ανάλογα με τον πόρο.
   rule {
     # Ορίζει το όνομα του πόρου μέσα στην AWS.
-    name     = "AWSManagedRulesAmazonIpReputationList"
+    name = "AWSManagedRulesAmazonIpReputationList"
     # Ορίζει τη σειρά αξιολόγησης κανόνων WAF.
     priority = 1
 
@@ -36,7 +36,7 @@ resource "aws_wafv2_web_acl" "public_alb" {
       # Χρησιμοποιεί έτοιμο AWS managed WAF rule group.
       managed_rule_group_statement {
         # Ορίζει το όνομα του πόρου μέσα στην AWS.
-        name        = "AWSManagedRulesAmazonIpReputationList"
+        name = "AWSManagedRulesAmazonIpReputationList"
         # Ορίζει τον vendor του managed rule group.
         vendor_name = "AWS"
       }
@@ -47,16 +47,16 @@ resource "aws_wafv2_web_acl" "public_alb" {
       # Ενεργοποιεί CloudWatch metrics για visibility.
       cloudwatch_metrics_enabled = true
       # Ορίζει το όνομα metric στο CloudWatch.
-      metric_name                = "${var.project_name}-${var.environment}-ip-reputation"
+      metric_name = "${var.project_name}-${var.environment}-ip-reputation"
       # Ενεργοποιεί δείγματα requests για ανάλυση.
-      sampled_requests_enabled   = true
+      sampled_requests_enabled = true
     }
   }
 
   # Ορίζει κανόνα ή policy block ανάλογα με τον πόρο.
   rule {
     # Ορίζει το όνομα του πόρου μέσα στην AWS.
-    name     = "AWSManagedRulesCommonRuleSet"
+    name = "AWSManagedRulesCommonRuleSet"
     # Ορίζει τη σειρά αξιολόγησης κανόνων WAF.
     priority = 2
 
@@ -71,7 +71,7 @@ resource "aws_wafv2_web_acl" "public_alb" {
       # Χρησιμοποιεί έτοιμο AWS managed WAF rule group.
       managed_rule_group_statement {
         # Ορίζει το όνομα του πόρου μέσα στην AWS.
-        name        = "AWSManagedRulesCommonRuleSet"
+        name = "AWSManagedRulesCommonRuleSet"
         # Ορίζει τον vendor του managed rule group.
         vendor_name = "AWS"
       }
@@ -82,16 +82,16 @@ resource "aws_wafv2_web_acl" "public_alb" {
       # Ενεργοποιεί CloudWatch metrics για visibility.
       cloudwatch_metrics_enabled = true
       # Ορίζει το όνομα metric στο CloudWatch.
-      metric_name                = "${var.project_name}-${var.environment}-common"
+      metric_name = "${var.project_name}-${var.environment}-common"
       # Ενεργοποιεί δείγματα requests για ανάλυση.
-      sampled_requests_enabled   = true
+      sampled_requests_enabled = true
     }
   }
 
   # Ορίζει κανόνα ή policy block ανάλογα με τον πόρο.
   rule {
     # Ορίζει το όνομα του πόρου μέσα στην AWS.
-    name     = "AWSManagedRulesKnownBadInputsRuleSet"
+    name = "AWSManagedRulesKnownBadInputsRuleSet"
     # Ορίζει τη σειρά αξιολόγησης κανόνων WAF.
     priority = 3
 
@@ -106,7 +106,7 @@ resource "aws_wafv2_web_acl" "public_alb" {
       # Χρησιμοποιεί έτοιμο AWS managed WAF rule group.
       managed_rule_group_statement {
         # Ορίζει το όνομα του πόρου μέσα στην AWS.
-        name        = "AWSManagedRulesKnownBadInputsRuleSet"
+        name = "AWSManagedRulesKnownBadInputsRuleSet"
         # Ορίζει τον vendor του managed rule group.
         vendor_name = "AWS"
       }
@@ -117,16 +117,16 @@ resource "aws_wafv2_web_acl" "public_alb" {
       # Ενεργοποιεί CloudWatch metrics για visibility.
       cloudwatch_metrics_enabled = true
       # Ορίζει το όνομα metric στο CloudWatch.
-      metric_name                = "${var.project_name}-${var.environment}-known-bad-inputs"
+      metric_name = "${var.project_name}-${var.environment}-known-bad-inputs"
       # Ενεργοποιεί δείγματα requests για ανάλυση.
-      sampled_requests_enabled   = true
+      sampled_requests_enabled = true
     }
   }
 
   # Ορίζει κανόνα ή policy block ανάλογα με τον πόρο.
   rule {
     # Ορίζει το όνομα του πόρου μέσα στην AWS.
-    name     = "AWSManagedRulesSQLiRuleSet"
+    name = "AWSManagedRulesSQLiRuleSet"
     # Ορίζει τη σειρά αξιολόγησης κανόνων WAF.
     priority = 4
 
@@ -141,7 +141,7 @@ resource "aws_wafv2_web_acl" "public_alb" {
       # Χρησιμοποιεί έτοιμο AWS managed WAF rule group.
       managed_rule_group_statement {
         # Ορίζει το όνομα του πόρου μέσα στην AWS.
-        name        = "AWSManagedRulesSQLiRuleSet"
+        name = "AWSManagedRulesSQLiRuleSet"
         # Ορίζει τον vendor του managed rule group.
         vendor_name = "AWS"
       }
@@ -152,16 +152,16 @@ resource "aws_wafv2_web_acl" "public_alb" {
       # Ενεργοποιεί CloudWatch metrics για visibility.
       cloudwatch_metrics_enabled = true
       # Ορίζει το όνομα metric στο CloudWatch.
-      metric_name                = "${var.project_name}-${var.environment}-sqli"
+      metric_name = "${var.project_name}-${var.environment}-sqli"
       # Ενεργοποιεί δείγματα requests για ανάλυση.
-      sampled_requests_enabled   = true
+      sampled_requests_enabled = true
     }
   }
 
   # Ορίζει κανόνα ή policy block ανάλογα με τον πόρο.
   rule {
     # Ορίζει το όνομα του πόρου μέσα στην AWS.
-    name     = "RateLimitPerIP"
+    name = "RateLimitPerIP"
     # Ορίζει τη σειρά αξιολόγησης κανόνων WAF.
     priority = 10
 
@@ -176,7 +176,7 @@ resource "aws_wafv2_web_acl" "public_alb" {
       # Κανόνας WAF που μετράει requests ανά IP και εφαρμόζει rate limit.
       rate_based_statement {
         # Ορίζει το όριο requests για rate limiting.
-        limit              = var.waf_rate_limit
+        limit = var.waf_rate_limit
         # Ορίζει με ποιο κλειδί γίνεται το rate aggregation.
         aggregate_key_type = "IP"
       }
@@ -187,9 +187,9 @@ resource "aws_wafv2_web_acl" "public_alb" {
       # Ενεργοποιεί CloudWatch metrics για visibility.
       cloudwatch_metrics_enabled = true
       # Ορίζει το όνομα metric στο CloudWatch.
-      metric_name                = "${var.project_name}-${var.environment}-rate-limit"
+      metric_name = "${var.project_name}-${var.environment}-rate-limit"
       # Ενεργοποιεί δείγματα requests για ανάλυση.
-      sampled_requests_enabled   = true
+      sampled_requests_enabled = true
     }
   }
 
@@ -198,9 +198,9 @@ resource "aws_wafv2_web_acl" "public_alb" {
     # Ενεργοποιεί CloudWatch metrics για visibility.
     cloudwatch_metrics_enabled = true
     # Ορίζει το όνομα metric στο CloudWatch.
-    metric_name                = "${var.project_name}-${var.environment}-public-alb-waf"
+    metric_name = "${var.project_name}-${var.environment}-public-alb-waf"
     # Ενεργοποιεί δείγματα requests για ανάλυση.
-    sampled_requests_enabled   = true
+    sampled_requests_enabled = true
   }
 
   tags = merge(local.common_tags, {
@@ -216,5 +216,5 @@ resource "aws_wafv2_web_acl_association" "public_alb" {
   # Ορίζει σε ποιον πόρο εφαρμόζεται το WAF.
   resource_arn = aws_lb.public_web.arn
   # Συνδέει το Web ACL με τον πόρο.
-  web_acl_arn  = aws_wafv2_web_acl.public_alb[0].arn
+  web_acl_arn = aws_wafv2_web_acl.public_alb[0].arn
 }

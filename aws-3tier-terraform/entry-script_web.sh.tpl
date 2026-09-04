@@ -2,8 +2,8 @@
 # Εκτελείται στο web EC2 instance την πρώτη φορά που ξεκινά μέσω Terraform user_data.
 # Το script εγκαθιστά Nginx/Node.js, κατεβάζει το React web artifact από S3, κάνει build και ρυθμίζει reverse proxy προς το internal ALB.
 
-# Σταματά το script σε λάθος, εμφανίζει τις εντολές που τρέχουν και αποτυγχάνει αν αποτύχει κομμάτι pipeline.
-set -euxo pipefail
+# Σταματά το script σε λάθος και αποτυγχάνει αν λείπει μεταβλητή ή αποτύχει κομμάτι pipeline.
+set -euo pipefail
 
 # Ενημερώνει τα πακέτα του Amazon Linux 2023.
 sudo dnf update -y
@@ -23,10 +23,8 @@ unzip -o web-tier.zip
 # Μετακινείται στον φάκελο του web tier κώδικα.
 cd /opt/aws-3tier/web-tier
 
-# Εγκαθιστά npm dependencies του frontend.
-npm install
-
-# Κάνει production build της React εφαρμογής.
+# Εγκαθιστά ακριβώς τα dependencies του package-lock.json και κάνει production build.
+npm ci
 npm run build
 
 # Καθαρίζει το default web root του Nginx.

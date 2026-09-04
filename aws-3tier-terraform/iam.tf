@@ -32,7 +32,7 @@ resource "aws_iam_role_policy_attachment" "ssm_core" {
 # Δημιουργεί custom IAM policy. Terraform όνομα: ec2_app_access.
 resource "aws_iam_policy" "ec2_app_access" {
   # Ορίζει το όνομα του πόρου μέσα στην AWS.
-  name        = "${var.project_name}-${var.environment}-ec2-app-access"
+  name = "${var.project_name}-${var.environment}-ec2-app-access"
   # Περιγράφει τον σκοπό του πόρου.
   description = "Allow EC2 instances to read deployment artifacts and DB secret"
 

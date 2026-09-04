@@ -5,7 +5,7 @@ data "aws_ami" "amazon_linux_2023" {
   # Ζητά το πιο πρόσφατο AMI που ταιριάζει στα φίλτρα.
   most_recent = true
   # Περιορίζει τα AMIs στον συγκεκριμένο owner.
-  owners      = ["amazon"]
+  owners = ["amazon"]
 
   # Φίλτρο αναζήτησης για data source.
   filter {
@@ -43,9 +43,9 @@ data "aws_ami" "amazon_linux_2023" {
 # Δημιουργεί EC2 launch template. Terraform όνομα: app.
 resource "aws_launch_template" "app" {
   # Ορίζει prefix ονόματος ώστε το AWS να δημιουργήσει μοναδικό όνομα.
-  name_prefix   = "${var.project_name}-${var.environment}-app-"
+  name_prefix = "${var.project_name}-${var.environment}-app-"
   # Ορίζει το AMI image με το οποίο θα ξεκινήσει το EC2 instance.
-  image_id      = data.aws_ami.amazon_linux_2023.id
+  image_id = data.aws_ami.amazon_linux_2023.id
   # Ορίζει το μέγεθος/τύπο του EC2 instance.
   instance_type = var.ec2_instance_type
 
@@ -63,22 +63,22 @@ resource "aws_launch_template" "app" {
   # Ρυθμίσεις ασφάλειας για EC2 metadata service.
   metadata_options {
     # Ενεργοποιεί το Instance Metadata Service.
-    http_endpoint               = "enabled"
+    http_endpoint = "enabled"
     # Απαιτεί IMDSv2 tokens για ασφαλέστερη πρόσβαση metadata.
-    http_tokens                 = "required"
+    http_tokens = "required"
     # Ορίζει hop limit για metadata responses.
     http_put_response_hop_limit = 2
   }
 
-# Περνά startup script που εκτελείται όταν ξεκινά το EC2 instance.
-user_data = base64encode(templatefile("${path.module}/entry-script_app.sh.tpl", {
-  aws_region          = var.aws_region
-  artifacts_bucket    = aws_s3_bucket.artifacts.bucket
-  app_artifact_s3_key = var.app_artifact_s3_key
-  db_secret_arn       = aws_secretsmanager_secret.db_credentials.arn
-  db_host             = aws_db_instance.main.address
-}))
-    
+  # Περνά startup script που εκτελείται όταν ξεκινά το EC2 instance.
+  user_data = base64encode(templatefile("${path.module}/entry-script_app.sh.tpl", {
+    aws_region          = var.aws_region
+    artifacts_bucket    = aws_s3_bucket.artifacts.bucket
+    app_artifact_s3_key = var.app_artifact_s3_key
+    db_secret_arn       = aws_secretsmanager_secret.db_credentials.arn
+    db_host             = aws_db_instance.main.address
+  }))
+
   # Ορίζει tags που θα περάσουν στα EC2 instances κατά τη δημιουργία.
   tag_specifications {
     # Ορίζει σε ποιον τύπο πόρου εφαρμόζονται τα tags.
@@ -106,9 +106,9 @@ user_data = base64encode(templatefile("${path.module}/entry-script_app.sh.tpl", 
 # Δημιουργεί EC2 launch template. Terraform όνομα: web.
 resource "aws_launch_template" "web" {
   # Ορίζει prefix ονόματος ώστε το AWS να δημιουργήσει μοναδικό όνομα.
-  name_prefix   = "${var.project_name}-${var.environment}-web-"
+  name_prefix = "${var.project_name}-${var.environment}-web-"
   # Ορίζει το AMI image με το οποίο θα ξεκινήσει το EC2 instance.
-  image_id      = data.aws_ami.amazon_linux_2023.id
+  image_id = data.aws_ami.amazon_linux_2023.id
   # Ορίζει το μέγεθος/τύπο του EC2 instance.
   instance_type = var.ec2_instance_type
 
@@ -126,19 +126,19 @@ resource "aws_launch_template" "web" {
   # Ρυθμίσεις ασφάλειας για EC2 metadata service.
   metadata_options {
     # Ενεργοποιεί το Instance Metadata Service.
-    http_endpoint               = "enabled"
+    http_endpoint = "enabled"
     # Απαιτεί IMDSv2 tokens για ασφαλέστερη πρόσβαση metadata.
-    http_tokens                 = "required"
+    http_tokens = "required"
     # Ορίζει hop limit για metadata responses.
     http_put_response_hop_limit = 2
   }
 
-# Περνά startup script που εκτελείται όταν ξεκινά το EC2 instance.
-user_data = base64encode(templatefile("${path.module}/entry-script_web.sh.tpl", {
-  artifacts_bucket     = aws_s3_bucket.artifacts.bucket
-  web_artifact_s3_key  = var.web_artifact_s3_key
-  internal_alb_dns_name = aws_lb.internal_app.dns_name
-}))
+  # Περνά startup script που εκτελείται όταν ξεκινά το EC2 instance.
+  user_data = base64encode(templatefile("${path.module}/entry-script_web.sh.tpl", {
+    artifacts_bucket      = aws_s3_bucket.artifacts.bucket
+    web_artifact_s3_key   = var.web_artifact_s3_key
+    internal_alb_dns_name = aws_lb.internal_app.dns_name
+  }))
 
   # Ορίζει tags που θα περάσουν στα EC2 instances κατά τη δημιουργία.
   tag_specifications {

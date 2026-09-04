@@ -5,9 +5,9 @@
 # Παράγει τυχαίο password. Terraform όνομα: db_password.
 resource "random_password" "db_password" {
   # Ορίζει το μήκος του παραγόμενου password.
-  length           = 24
+  length = 24
   # Επιτρέπει ειδικούς χαρακτήρες στο password.
-  special          = true
+  special = true
   # Περιορίζει ποιοι ειδικοί χαρακτήρες μπορούν να χρησιμοποιηθούν.
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
@@ -17,7 +17,7 @@ resource "random_password" "db_password" {
 # Δημιουργεί secret στο AWS Secrets Manager. Terraform όνομα: db_credentials.
 resource "aws_secretsmanager_secret" "db_credentials" {
   # Ορίζει το όνομα του πόρου μέσα στην AWS.
-  name        = "${var.project_name}/${var.environment}/rds/credentials"
+  name = "${var.project_name}/${var.environment}/rds/credentials"
   # Περιγράφει τον σκοπό του πόρου.
   description = "RDS credentials for ${var.project_name}-${var.environment}"
 

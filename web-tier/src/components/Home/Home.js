@@ -1,16 +1,13 @@
+import React from 'react';
 
-    import React, {Component} from 'react';
-    import architecture from '../../assets/3TierArch.png'
+const Home = () => (
+  <main>
+    <h1 style={{ color: 'white' }}>AWS Secure 3-Tier Architecture</h1>
+    <p style={{ color: 'white', maxWidth: '60rem', lineHeight: 1.6 }}>
+      Internet → AWS WAF → Public HTTPS ALB → Web Auto Scaling Group →
+      Internal ALB → Application Auto Scaling Group → Amazon RDS MySQL
+    </p>
+  </main>
+);
 
-    class Home extends Component {
-        render () {
-        return (
-            <div>
-            <h1 style={{color:"white"}}>AWS 3-TIER WEB APP DEMO</h1>
-            <img src={architecture} alt="3T Web App Architecture" style={{height:400,width:825}} />
-          </div>
-        );
-      }
-    }
-
-    export default Home;
+export default Home;

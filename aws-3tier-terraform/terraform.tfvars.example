@@ -1,0 +1,20 @@
+# Copy this file to terraform.tfvars and replace the example domains.
+aws_region       = "eu-central-1"
+project_name     = "aws-3tier"
+environment      = "dev"
+domain_name      = "app.example.com"
+route53_zone_name = "example.com"
+
+# High availability and edge protection are enabled by default.
+enable_rds_multi_az       = true
+rds_deletion_protection   = true
+enable_waf                = true
+waf_rate_limit            = 1000
+
+# Default capacity runs two instances in each compute tier.
+web_desired_capacity = 2
+web_min_size         = 2
+web_max_size         = 4
+app_desired_capacity = 2
+app_min_size         = 2
+app_max_size         = 4

@@ -19,11 +19,11 @@ resource "aws_s3_bucket_public_access_block" "artifacts" {
   bucket = aws_s3_bucket.artifacts.id
 
   # Μπλοκάρει public ACLs στο S3 bucket.
-  block_public_acls       = true
+  block_public_acls = true
   # Μπλοκάρει public bucket policies στο S3 bucket.
-  block_public_policy     = true
+  block_public_policy = true
   # Αγνοεί public ACLs ακόμα και αν υπάρχουν.
-  ignore_public_acls      = true
+  ignore_public_acls = true
   # Περιορίζει public πρόσβαση μέσω policies.
   restrict_public_buckets = true
 }

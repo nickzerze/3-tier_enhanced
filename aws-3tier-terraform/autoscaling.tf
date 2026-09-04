@@ -12,12 +12,12 @@ resource "aws_autoscaling_group" "app" {
   # Ορίζει πόσα instances θέλουμε κανονικά να τρέχουν.
   desired_capacity = var.app_desired_capacity
   # Ορίζει το ελάχιστο πλήθος instances.
-  min_size         = var.app_min_size
+  min_size = var.app_min_size
   # Ορίζει το μέγιστο πλήθος instances.
-  max_size         = var.app_max_size
+  max_size = var.app_max_size
 
   # Ορίζει αν τα health checks γίνονται από EC2 ή ELB.
-  health_check_type         = "ELB"
+  health_check_type = "ELB"
   # Δίνει χρόνο στο instance να ξεκινήσει πριν αποτύχουν health checks.
   health_check_grace_period = 300
 
@@ -29,7 +29,7 @@ resource "aws_autoscaling_group" "app" {
   # Σύνδεση του Auto Scaling Group με το Launch Template.
   launch_template {
     # Αναφέρεται στο ID άλλου Terraform/AWS πόρου.
-    id      = aws_launch_template.app.id
+    id = aws_launch_template.app.id
     # Ορίζει έκδοση αντικειμένου, policy ή provider.
     version = aws_launch_template.app.latest_version
   }
@@ -48,27 +48,27 @@ resource "aws_autoscaling_group" "app" {
 
   tag {
     # Ορίζει το όνομα ενός tag.
-    key                 = "Name"
+    key = "Name"
     # Ορίζει την τιμή ενός output ή tag.
-    value               = "${var.project_name}-${var.environment}-app"
+    value = "${var.project_name}-${var.environment}-app"
     # Περνά το tag αυτόματα στα EC2 instances που δημιουργούνται.
     propagate_at_launch = true
   }
 
   tag {
     # Ορίζει το όνομα ενός tag.
-    key                 = "Environment"
+    key = "Environment"
     # Ορίζει την τιμή ενός output ή tag.
-    value               = var.environment
+    value = var.environment
     # Περνά το tag αυτόματα στα EC2 instances που δημιουργούνται.
     propagate_at_launch = true
   }
 
   tag {
     # Ορίζει το όνομα ενός tag.
-    key                 = "Tier"
+    key = "Tier"
     # Ορίζει την τιμή ενός output ή tag.
-    value               = "app"
+    value = "app"
     # Περνά το tag αυτόματα στα EC2 instances που δημιουργούνται.
     propagate_at_launch = true
   }
@@ -92,12 +92,12 @@ resource "aws_autoscaling_group" "web" {
   # Ορίζει πόσα instances θέλουμε κανονικά να τρέχουν.
   desired_capacity = var.web_desired_capacity
   # Ορίζει το ελάχιστο πλήθος instances.
-  min_size         = var.web_min_size
+  min_size = var.web_min_size
   # Ορίζει το μέγιστο πλήθος instances.
-  max_size         = var.web_max_size
+  max_size = var.web_max_size
 
   # Ορίζει αν τα health checks γίνονται από EC2 ή ELB.
-  health_check_type         = "ELB"
+  health_check_type = "ELB"
   # Δίνει χρόνο στο instance να ξεκινήσει πριν αποτύχουν health checks.
   health_check_grace_period = 300
 
@@ -109,7 +109,7 @@ resource "aws_autoscaling_group" "web" {
   # Σύνδεση του Auto Scaling Group με το Launch Template.
   launch_template {
     # Αναφέρεται στο ID άλλου Terraform/AWS πόρου.
-    id      = aws_launch_template.web.id
+    id = aws_launch_template.web.id
     # Ορίζει έκδοση αντικειμένου, policy ή provider.
     version = aws_launch_template.web.latest_version
   }
@@ -128,27 +128,27 @@ resource "aws_autoscaling_group" "web" {
 
   tag {
     # Ορίζει το όνομα ενός tag.
-    key                 = "Name"
+    key = "Name"
     # Ορίζει την τιμή ενός output ή tag.
-    value               = "${var.project_name}-${var.environment}-web"
+    value = "${var.project_name}-${var.environment}-web"
     # Περνά το tag αυτόματα στα EC2 instances που δημιουργούνται.
     propagate_at_launch = true
   }
 
   tag {
     # Ορίζει το όνομα ενός tag.
-    key                 = "Environment"
+    key = "Environment"
     # Ορίζει την τιμή ενός output ή tag.
-    value               = var.environment
+    value = var.environment
     # Περνά το tag αυτόματα στα EC2 instances που δημιουργούνται.
     propagate_at_launch = true
   }
 
   tag {
     # Ορίζει το όνομα ενός tag.
-    key                 = "Tier"
+    key = "Tier"
     # Ορίζει την τιμή ενός output ή tag.
-    value               = "web"
+    value = "web"
     # Περνά το tag αυτόματα στα EC2 instances που δημιουργούνται.
     propagate_at_launch = true
   }

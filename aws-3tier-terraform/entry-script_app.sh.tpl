@@ -2,8 +2,9 @@
 # Εκτελείται στο app EC2 instance την πρώτη φορά που ξεκινά μέσω Terraform user_data.
 # Το script εγκαθιστά dependencies, κατεβάζει το app artifact από S3, παίρνει DB credentials από Secrets Manager και ξεκινά την εφαρμογή με PM2.
 
-# Σταματά το script σε λάθος, εμφανίζει τις εντολές που τρέχουν και αποτυγχάνει αν αποτύχει κομμάτι pipeline.
-set -euxo pipefail
+# Σταματά το script σε λάθος και αποτυγχάνει αν λείπει μεταβλητή ή αποτύχει κομμάτι pipeline.
+# Δεν ενεργοποιείται xtrace, ώστε τα credentials του Secrets Manager να μη γραφτούν στα cloud-init logs.
+set -euo pipefail
 
 # Ενημερώνει τα πακέτα του Amazon Linux 2023.
 sudo dnf update -y
@@ -30,30 +31,34 @@ unzip -o app-tier.zip
 cd /opt/aws-3tier/app-tier
 
 # Διαβάζει από το AWS Secrets Manager το JSON με username/password/dbname της βάσης.
-SECRET_JSON=$(aws secretsmanager get-secret-value   --secret-id "${db_secret_arn}"   --region "${aws_region}"   --query SecretString   --output text)
+SECRET_JSON=$(aws secretsmanager get-secret-value \
+  --secret-id "${db_secret_arn}" \
+  --region "${aws_region}" \
+  --query SecretString \
+  --output text)
 
-# Εξάγει το database username από το JSON secret.
+# Εξάγει τα στοιχεία σύνδεσης από το JSON secret.
 DB_USERNAME=$(echo "$SECRET_JSON" | jq -r .username)
-# Εξάγει το database password από το JSON secret.
 DB_PASSWORD=$(echo "$SECRET_JSON" | jq -r .password)
-# Εξάγει το database name από το JSON secret.
 DB_NAME=$(echo "$SECRET_JSON" | jq -r .dbname)
 
 # Αν υπάρχει DbConfig.js, το ξαναγράφει ώστε η εφαρμογή να συνδεθεί στο RDS endpoint.
 if [ -f "DbConfig.js" ]; then
-  # Δημιουργεί configuration αρχείο Node.js με host, user, password και database name.
   cat > DbConfig.js <<EOF
-module.exports = {
-  HOST: "${db_host}",
-  USER: "$DB_USERNAME",
-  PASSWORD: "$DB_PASSWORD",
-  DB: "$DB_NAME"
-};
+module.exports = Object.freeze({
+  DB_HOST: "${db_host}",
+  DB_USER: "$DB_USERNAME",
+  DB_PWD: "$DB_PASSWORD",
+  DB_DATABASE: "$DB_NAME"
+});
 EOF
+  chmod 600 DbConfig.js
 fi
 
-# Εγκαθιστά τα npm dependencies της εφαρμογής.
-npm install
+unset SECRET_JSON DB_USERNAME DB_PASSWORD DB_NAME
+
+# Εγκαθιστά ακριβώς τα dependencies του package-lock.json.
+npm ci
 
 # Διαγράφει παλιά PM2 processes αν υπάρχουν, χωρίς να αποτύχει το script αν δεν υπάρχουν.
 pm2 delete all || true

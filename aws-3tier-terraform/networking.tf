@@ -9,11 +9,11 @@ data "aws_availability_zones" "available" {
 # Δημιουργεί το βασικό VPC. Terraform όνομα: main.
 resource "aws_vpc" "main" {
   # Ορίζει το CIDR block, δηλαδή το εύρος ιδιωτικών IP διευθύνσεων.
-  cidr_block           = var.vpc_cidr
+  cidr_block = var.vpc_cidr
   # Ενεργοποιεί DNS hostnames μέσα στο VPC.
   enable_dns_hostnames = true
   # Ενεργοποιεί DNS resolution μέσα στο VPC.
-  enable_dns_support   = true
+  enable_dns_support = true
 
   # Tags για οργάνωση, αναζήτηση και κοστολόγηση πόρων στην AWS.
   tags = {
@@ -39,11 +39,11 @@ resource "aws_internet_gateway" "main" {
 # Δημιουργεί subnet μέσα στο VPC. Terraform όνομα: public_az1.
 resource "aws_subnet" "public_az1" {
   # Συνδέει τον πόρο με το συγκεκριμένο VPC.
-  vpc_id                  = aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
   # Ορίζει το CIDR block, δηλαδή το εύρος ιδιωτικών IP διευθύνσεων.
-  cidr_block              = var.public_subnet_az1_cidr
+  cidr_block = var.public_subnet_az1_cidr
   # Ορίζει σε ποια Availability Zone ανήκει το subnet.
-  availability_zone       = data.aws_availability_zones.available.names[0]
+  availability_zone = data.aws_availability_zones.available.names[0]
   # Καθορίζει αν τα νέα instances παίρνουν αυτόματα public IP.
   map_public_ip_on_launch = true
 
@@ -58,11 +58,11 @@ resource "aws_subnet" "public_az1" {
 # Δημιουργεί subnet μέσα στο VPC. Terraform όνομα: public_az2.
 resource "aws_subnet" "public_az2" {
   # Συνδέει τον πόρο με το συγκεκριμένο VPC.
-  vpc_id                  = aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
   # Ορίζει το CIDR block, δηλαδή το εύρος ιδιωτικών IP διευθύνσεων.
-  cidr_block              = var.public_subnet_az2_cidr
+  cidr_block = var.public_subnet_az2_cidr
   # Ορίζει σε ποια Availability Zone ανήκει το subnet.
-  availability_zone       = data.aws_availability_zones.available.names[1]
+  availability_zone = data.aws_availability_zones.available.names[1]
   # Καθορίζει αν τα νέα instances παίρνουν αυτόματα public IP.
   map_public_ip_on_launch = true
 
@@ -79,11 +79,11 @@ resource "aws_subnet" "public_az2" {
 # Δημιουργεί subnet μέσα στο VPC. Terraform όνομα: private_web_az1.
 resource "aws_subnet" "private_web_az1" {
   # Συνδέει τον πόρο με το συγκεκριμένο VPC.
-  vpc_id                  = aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
   # Ορίζει το CIDR block, δηλαδή το εύρος ιδιωτικών IP διευθύνσεων.
-  cidr_block              = var.private_web_subnet_az1_cidr
+  cidr_block = var.private_web_subnet_az1_cidr
   # Ορίζει σε ποια Availability Zone ανήκει το subnet.
-  availability_zone       = data.aws_availability_zones.available.names[0]
+  availability_zone = data.aws_availability_zones.available.names[0]
   # Καθορίζει αν τα νέα instances παίρνουν αυτόματα public IP.
   map_public_ip_on_launch = false
 
@@ -98,11 +98,11 @@ resource "aws_subnet" "private_web_az1" {
 # Δημιουργεί subnet μέσα στο VPC. Terraform όνομα: private_web_az2.
 resource "aws_subnet" "private_web_az2" {
   # Συνδέει τον πόρο με το συγκεκριμένο VPC.
-  vpc_id                  = aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
   # Ορίζει το CIDR block, δηλαδή το εύρος ιδιωτικών IP διευθύνσεων.
-  cidr_block              = var.private_web_subnet_az2_cidr
+  cidr_block = var.private_web_subnet_az2_cidr
   # Ορίζει σε ποια Availability Zone ανήκει το subnet.
-  availability_zone       = data.aws_availability_zones.available.names[1]
+  availability_zone = data.aws_availability_zones.available.names[1]
   # Καθορίζει αν τα νέα instances παίρνουν αυτόματα public IP.
   map_public_ip_on_launch = false
 
@@ -119,11 +119,11 @@ resource "aws_subnet" "private_web_az2" {
 # Δημιουργεί subnet μέσα στο VPC. Terraform όνομα: private_app_az1.
 resource "aws_subnet" "private_app_az1" {
   # Συνδέει τον πόρο με το συγκεκριμένο VPC.
-  vpc_id                  = aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
   # Ορίζει το CIDR block, δηλαδή το εύρος ιδιωτικών IP διευθύνσεων.
-  cidr_block              = var.private_app_subnet_az1_cidr
+  cidr_block = var.private_app_subnet_az1_cidr
   # Ορίζει σε ποια Availability Zone ανήκει το subnet.
-  availability_zone       = data.aws_availability_zones.available.names[0]
+  availability_zone = data.aws_availability_zones.available.names[0]
   # Καθορίζει αν τα νέα instances παίρνουν αυτόματα public IP.
   map_public_ip_on_launch = false
 
@@ -138,11 +138,11 @@ resource "aws_subnet" "private_app_az1" {
 # Δημιουργεί subnet μέσα στο VPC. Terraform όνομα: private_app_az2.
 resource "aws_subnet" "private_app_az2" {
   # Συνδέει τον πόρο με το συγκεκριμένο VPC.
-  vpc_id                  = aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
   # Ορίζει το CIDR block, δηλαδή το εύρος ιδιωτικών IP διευθύνσεων.
-  cidr_block              = var.private_app_subnet_az2_cidr
+  cidr_block = var.private_app_subnet_az2_cidr
   # Ορίζει σε ποια Availability Zone ανήκει το subnet.
-  availability_zone       = data.aws_availability_zones.available.names[1]
+  availability_zone = data.aws_availability_zones.available.names[1]
   # Καθορίζει αν τα νέα instances παίρνουν αυτόματα public IP.
   map_public_ip_on_launch = false
 
@@ -159,11 +159,11 @@ resource "aws_subnet" "private_app_az2" {
 # Δημιουργεί subnet μέσα στο VPC. Terraform όνομα: private_db_az1.
 resource "aws_subnet" "private_db_az1" {
   # Συνδέει τον πόρο με το συγκεκριμένο VPC.
-  vpc_id                  = aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
   # Ορίζει το CIDR block, δηλαδή το εύρος ιδιωτικών IP διευθύνσεων.
-  cidr_block              = var.private_db_subnet_az1_cidr
+  cidr_block = var.private_db_subnet_az1_cidr
   # Ορίζει σε ποια Availability Zone ανήκει το subnet.
-  availability_zone       = data.aws_availability_zones.available.names[0]
+  availability_zone = data.aws_availability_zones.available.names[0]
   # Καθορίζει αν τα νέα instances παίρνουν αυτόματα public IP.
   map_public_ip_on_launch = false
 
@@ -178,11 +178,11 @@ resource "aws_subnet" "private_db_az1" {
 # Δημιουργεί subnet μέσα στο VPC. Terraform όνομα: private_db_az2.
 resource "aws_subnet" "private_db_az2" {
   # Συνδέει τον πόρο με το συγκεκριμένο VPC.
-  vpc_id                  = aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
   # Ορίζει το CIDR block, δηλαδή το εύρος ιδιωτικών IP διευθύνσεων.
-  cidr_block              = var.private_db_subnet_az2_cidr
+  cidr_block = var.private_db_subnet_az2_cidr
   # Ορίζει σε ποια Availability Zone ανήκει το subnet.
-  availability_zone       = data.aws_availability_zones.available.names[1]
+  availability_zone = data.aws_availability_zones.available.names[1]
   # Καθορίζει αν τα νέα instances παίρνουν αυτόματα public IP.
   map_public_ip_on_launch = false
 
@@ -225,7 +225,7 @@ resource "aws_nat_gateway" "az1" {
   # Συνδέει το NAT Gateway με την Elastic IP.
   allocation_id = aws_eip.nat_az1.id
   # Ορίζει σε ποιο subnet θα δημιουργηθεί ή θα συνδεθεί ο πόρος.
-  subnet_id     = aws_subnet.public_az1.id
+  subnet_id = aws_subnet.public_az1.id
 
   # Επιβάλλει σειρά δημιουργίας πόρων όταν υπάρχει εξάρτηση.
   depends_on = [aws_internet_gateway.main]
@@ -242,7 +242,7 @@ resource "aws_nat_gateway" "az2" {
   # Συνδέει το NAT Gateway με την Elastic IP.
   allocation_id = aws_eip.nat_az2.id
   # Ορίζει σε ποιο subnet θα δημιουργηθεί ή θα συνδεθεί ο πόρος.
-  subnet_id     = aws_subnet.public_az2.id
+  subnet_id = aws_subnet.public_az2.id
 
   # Επιβάλλει σειρά δημιουργίας πόρων όταν υπάρχει εξάρτηση.
   depends_on = [aws_internet_gateway.main]
@@ -272,17 +272,17 @@ resource "aws_route_table" "public" {
 # Προσθέτει route σε route table. Terraform όνομα: public_internet_access.
 resource "aws_route" "public_internet_access" {
   # Ορίζει ποιο route table τροποποιείται ή συνδέεται.
-  route_table_id         = aws_route_table.public.id
+  route_table_id = aws_route_table.public.id
   # Ορίζει τον προορισμό της διαδρομής, π.χ. 0.0.0.0/0 για Internet.
   destination_cidr_block = "0.0.0.0/0"
   # Στέλνει την κίνηση προς Internet Gateway.
-  gateway_id             = aws_internet_gateway.main.id
+  gateway_id = aws_internet_gateway.main.id
 }
 
 # Συνδέει subnet με route table. Terraform όνομα: public_az1.
 resource "aws_route_table_association" "public_az1" {
   # Ορίζει σε ποιο subnet θα δημιουργηθεί ή θα συνδεθεί ο πόρος.
-  subnet_id      = aws_subnet.public_az1.id
+  subnet_id = aws_subnet.public_az1.id
   # Ορίζει ποιο route table τροποποιείται ή συνδέεται.
   route_table_id = aws_route_table.public.id
 }
@@ -290,7 +290,7 @@ resource "aws_route_table_association" "public_az1" {
 # Συνδέει subnet με route table. Terraform όνομα: public_az2.
 resource "aws_route_table_association" "public_az2" {
   # Ορίζει σε ποιο subnet θα δημιουργηθεί ή θα συνδεθεί ο πόρος.
-  subnet_id      = aws_subnet.public_az2.id
+  subnet_id = aws_subnet.public_az2.id
   # Ορίζει ποιο route table τροποποιείται ή συνδέεται.
   route_table_id = aws_route_table.public.id
 }
@@ -312,17 +312,17 @@ resource "aws_route_table" "private_az1" {
 # Προσθέτει route σε route table. Terraform όνομα: private_az1_nat_access.
 resource "aws_route" "private_az1_nat_access" {
   # Ορίζει ποιο route table τροποποιείται ή συνδέεται.
-  route_table_id         = aws_route_table.private_az1.id
+  route_table_id = aws_route_table.private_az1.id
   # Ορίζει τον προορισμό της διαδρομής, π.χ. 0.0.0.0/0 για Internet.
   destination_cidr_block = "0.0.0.0/0"
   # Στέλνει την outbound κίνηση ιδιωτικών subnets προς NAT Gateway.
-  nat_gateway_id         = aws_nat_gateway.az1.id
+  nat_gateway_id = aws_nat_gateway.az1.id
 }
 
 # Συνδέει subnet με route table. Terraform όνομα: private_web_az1.
 resource "aws_route_table_association" "private_web_az1" {
   # Ορίζει σε ποιο subnet θα δημιουργηθεί ή θα συνδεθεί ο πόρος.
-  subnet_id      = aws_subnet.private_web_az1.id
+  subnet_id = aws_subnet.private_web_az1.id
   # Ορίζει ποιο route table τροποποιείται ή συνδέεται.
   route_table_id = aws_route_table.private_az1.id
 }
@@ -330,7 +330,7 @@ resource "aws_route_table_association" "private_web_az1" {
 # Συνδέει subnet με route table. Terraform όνομα: private_app_az1.
 resource "aws_route_table_association" "private_app_az1" {
   # Ορίζει σε ποιο subnet θα δημιουργηθεί ή θα συνδεθεί ο πόρος.
-  subnet_id      = aws_subnet.private_app_az1.id
+  subnet_id = aws_subnet.private_app_az1.id
   # Ορίζει ποιο route table τροποποιείται ή συνδέεται.
   route_table_id = aws_route_table.private_az1.id
 }
@@ -352,17 +352,17 @@ resource "aws_route_table" "private_az2" {
 # Προσθέτει route σε route table. Terraform όνομα: private_az2_nat_access.
 resource "aws_route" "private_az2_nat_access" {
   # Ορίζει ποιο route table τροποποιείται ή συνδέεται.
-  route_table_id         = aws_route_table.private_az2.id
+  route_table_id = aws_route_table.private_az2.id
   # Ορίζει τον προορισμό της διαδρομής, π.χ. 0.0.0.0/0 για Internet.
   destination_cidr_block = "0.0.0.0/0"
   # Στέλνει την outbound κίνηση ιδιωτικών subnets προς NAT Gateway.
-  nat_gateway_id         = aws_nat_gateway.az2.id
+  nat_gateway_id = aws_nat_gateway.az2.id
 }
 
 # Συνδέει subnet με route table. Terraform όνομα: private_web_az2.
 resource "aws_route_table_association" "private_web_az2" {
   # Ορίζει σε ποιο subnet θα δημιουργηθεί ή θα συνδεθεί ο πόρος.
-  subnet_id      = aws_subnet.private_web_az2.id
+  subnet_id = aws_subnet.private_web_az2.id
   # Ορίζει ποιο route table τροποποιείται ή συνδέεται.
   route_table_id = aws_route_table.private_az2.id
 }
@@ -370,7 +370,7 @@ resource "aws_route_table_association" "private_web_az2" {
 # Συνδέει subnet με route table. Terraform όνομα: private_app_az2.
 resource "aws_route_table_association" "private_app_az2" {
   # Ορίζει σε ποιο subnet θα δημιουργηθεί ή θα συνδεθεί ο πόρος.
-  subnet_id      = aws_subnet.private_app_az2.id
+  subnet_id = aws_subnet.private_app_az2.id
   # Ορίζει ποιο route table τροποποιείται ή συνδέεται.
   route_table_id = aws_route_table.private_az2.id
 }
@@ -392,7 +392,7 @@ resource "aws_route_table" "private_db" {
 # Συνδέει subnet με route table. Terraform όνομα: private_db_az1.
 resource "aws_route_table_association" "private_db_az1" {
   # Ορίζει σε ποιο subnet θα δημιουργηθεί ή θα συνδεθεί ο πόρος.
-  subnet_id      = aws_subnet.private_db_az1.id
+  subnet_id = aws_subnet.private_db_az1.id
   # Ορίζει ποιο route table τροποποιείται ή συνδέεται.
   route_table_id = aws_route_table.private_db.id
 }
@@ -400,7 +400,7 @@ resource "aws_route_table_association" "private_db_az1" {
 # Συνδέει subnet με route table. Terraform όνομα: private_db_az2.
 resource "aws_route_table_association" "private_db_az2" {
   # Ορίζει σε ποιο subnet θα δημιουργηθεί ή θα συνδεθεί ο πόρος.
-  subnet_id      = aws_subnet.private_db_az2.id
+  subnet_id = aws_subnet.private_db_az2.id
   # Ορίζει ποιο route table τροποποιείται ή συνδέεται.
   route_table_id = aws_route_table.private_db.id
 }

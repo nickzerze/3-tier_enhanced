@@ -8,14 +8,14 @@ terraform {
   required_providers {
     aws = {
       # Ορίζει από πού κατεβαίνει ο provider.
-      source  = "hashicorp/aws"
+      source = "hashicorp/aws"
       # Ορίζει έκδοση αντικειμένου, policy ή provider.
       version = "~> 6.0"
     }
 
     random = {
       # Ορίζει από πού κατεβαίνει ο provider.
-      source  = "hashicorp/random"
+      source = "hashicorp/random"
       # Ορίζει έκδοση αντικειμένου, policy ή provider.
       version = "~> 3.6"
     }
